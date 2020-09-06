@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rendering HTML File</title>
+    <style>
+    .list{
+        line-height: normal;
+        margin:auto;
+    }
+    .top{
+        width: 80%;
+        border: 2px solid #F59696;
+    }
+    div img{
+        margin-top: 18px;
+        margin-right: 15px;
+    }
+
+    </style>
+</head>
+<body>
+    <button id="button">Show Data</button>
+    <br>
+    <h1>List of Github Profile</h1>
+    <div id="people"></div>
+    
+    <script>
+        document.getElementById('button').addEventListener('click', showData);
+        function showData() {
+            var req = new XMLHttpRequest();
+            req.open('GET', 'data.json', true);
+            req.onload = function(){
+                if(req.status==200){
+                    var people = JSON.parse(req.responseText)
+                    var output= ' ';
+                    for(var i in people){
+                            output +=
+                                '<div class="top" style="background-color:#F59696;">'+
+                                    '<div style="margin-left: 40px; float:left;">' +
+                                    '<img src="'+people[i].avatar_url+'" width="158px" height="158px">' +
+                                '</div>' +
+                                '<div class="list" style="line-height:1.2; margin:auto">' +
+                                     '<ol>ID : '+people[i].id+'</ol>' +
+                                     '<ol>Login : '+people[i].login+'</ol>' +
+                                     '<ol>Repos : '+people[i].repos_url+'</ol>' +
+                                     '<ol>Followers : '+people[i].followers_url+'</ol>' +
+                                     '<ol>Following : '+people[i].following_url+'</ol>' +
+                                '</div>' +
+                                '</div>';
+                    }
+                    document.getElementById('people').innerHTML=output;
+                }
+            }
+            req.send();
+        }
+    </script>
+</body>
+</html>
